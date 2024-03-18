@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Outgrow Ai Farm Support</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+</head>
+
+<body>
+  <!-- partial:index.partial.html -->
+  
+  <section class="msger">
+    <header class="msger-header">
+      <div class="msger-header-title">
+        <i class="name"></i> Bhoomi Bot <i class="name"></i>
+      </div>
+    </header>
+
+    <main class="msger-chat" id="text-chat">
+      
+      <div class="msg left-msg">
+
+               
+      </div>
+
+    </main>
+    <main class="msger-chat" id="audio-chat" style="display: none;">
+     
+      <div class="msg left-msg">
+
+      </div>
+
+    </main>
+
+
+
+    <div class="tab-wrapper">
+        <button class="switch-tab-button" onclick="switchTab()"><i class="fas fa-microphone microphone-icon"></i><h6>Switch to Audio Input</h6></button>
+
+        <!-- Text Input Tab -->
+        <div class="msger-text-tab">
+          <form class="msger-inputarea">
+            <div class="input-and-send">
+              <input type="text" class="msger-input" id="textInput" placeholder="Enter your message...">
+              <button type="submit" class="msger-send-btn">Submit</button>
+            </div>
+            <div class="language-selection">
+              <label for="language">Select Language:-</label>
+              <input type="radio" id="text-english" name="language" value="English">
+              <label for="text-english">English</label>
+  
+              <input type="radio" id="text-hindi" name="language" value="हिंदी">
+              <label for="text-hindi">हिंदी</label>
+  
+              <input type="radio" id="text-kannada" name="language" value="ಕನ್ನಡ">
+              <label for="text-kannada">ಕನ್ನಡ</label>
+  
+              <input type="radio" id="text-telugu" name="language" value="తెలుగు">
+              <label for="text-telugu">తెలుగు</label>
+  
+              <input type="radio" id="text-tamil" name="language" value="தமிழ்">
+              <label for="text-tamil">தமிழ்</label>
+  
+              <input type="radio" id="text-marathi" name="language" value="मराठी">
+              <label for="text-marathi">मराठी</label>
+            </div>
+          </form>
+
+        </div>
+
+        <!-- Audio Input Tab -->
+
+        <div class="msger-audio-tab">
+            <div class="msger-input-audio">
+                <button id="startRecordingBtn" onclick="startRecording()">
+                    <i class="fas fa-microphone microphone-icon"></i>
+                    Start Recording
+                  </button>
+                  <button id="stopRecordingBtn" onclick="stopRecording()" disabled>
+                    <i class="fas fa-stop-circle microphone-icon"></i>
+                    Stop Recording
+                  </button>
+                  <button id="sendRecordingBtn" onclick="sendRecording()" disabled>
+                    <i class="fas fa-paper-plane microphone-icon"></i>
+                    Submit
+                </button>
+            </div>
+            <div class="msger-audio-msg">
+              <p>Recorded Audio:</p>
+              <audio id="recordedAudio" controls></audio>
+              <div id="recordingTime">Recording: 0s</div> 
+            </div>
+            <div class="language-selection">
+              <label for="language">Select Language:-</label>
+              <input type="radio" id="audio-english" name="language" value="English">
+              <label for="audio-english">English</label>
+  
+              <input type="radio" id="audio-hindi" name="language" value="हिंदी">
+              <label for="audio-hindi">हिंदी</label>
+  
+              <input type="radio" id="audio-kannada" name="language" value="ಕನ್ನಡ">
+              <label for="audio-kannada">ಕನ್ನಡ</label>
+  
+              <input type="radio" id="audio-telugu" name="language" value="తెలుగు">
+              <label for="audio-telugu">తెలుగు</label>
+  
+              <input type="radio" id="audio-tamil" name="language" value="தமிழ்">
+              <label for="audio-tamil">தமிழ்</label>
+  
+              <input type="radio" id="audio-marathi" name="language" value="मराठी">
+              <label for="audio-marathi">मराठी</label>
+            </div>
+            
+          
+        </div>
+    </div>  
+
+  </section>
+  <!-- partial -->
+  <script src='https://use.fontawesome.com/releases/v5.0.13/js/all.js'></script>
+  <script>
+    const msgerForm = get(".msger-inputarea");
+    const msgerInput = get(".msger-input");
+    const msgerChat = get(".msger-chat");
+    const textTab = get(".msger-text-tab");
+    const audioTab = get(".msger-audio-tab");
+    const switchTabButton = get(".switch-tab-button");   
+
+    // Icons made by Freepik from www.flaticon.com
+    const BOT_IMG = "https://play-lh.googleusercontent.com/bkbPI6fDoV4kuy4333nWqad6CtfHztT_MHTkp7n0P0dLBgOKeqIIof6Mvn2aVOwtL2g=w240-h480-rw";
+    const PERSON_IMG = "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQRwRhglrPkgbbEucZtn3H7xoNjJA2cMjuOAylAmHI9Cp2Nkwvu";
+    const BOT_NAME = "  Outgrow Chatbot";
+    const username = "{{ username }}"
+    const PERSON_NAME = username;
+    const farmernumber= "{{ farmernumber }}";
+    console.log(farmernumber)
+    const farmlocation = "{{ location }}" ;
+    console.log(location)
+    const internnumber= "{{ internnumber }}";
+    console.log(internnumber)
+
+        
+    function displayWelcomeMessage() {
+      const textChat = get("#text-chat");
+      const audioChat = get("#audio-chat");
+      const welcomeMessage = `Hi <b>${username}</b>, I am AI Integrated Large Language Model. I Will Guide Farmers With Advanced AI Technology.`;
+      appendMessage(BOT_NAME, BOT_IMG, "left", welcomeMessage, textChat);
+      appendMessage(BOT_NAME, BOT_IMG, "left", welcomeMessage, audioChat);
+    }
+
+    // Call the function to display the welcome message on page load
+    displayWelcomeMessage();
+
+    function decodeHTMLEntities(text) {
+      const doc = new DOMParser().parseFromString(text, "text/html");
+      return doc.documentElement.textContent;
+    }
+    let botFeedback;
+    let userFeedback;
+
+ 
+
+
+
+    
+    // Function to append the feedback message to the chat container
+    
+    
+    
+    
+    function appendMessageWithLoadingIndicator(name, img, side, content, chatContainer) {
+      const loadingMsgHTML = `
+        <div class="msg ${side}-msg bot-loading-msg">
+          <div class="msg-img" style="background-image: url(${img})"></div>
+
+          <div class="msg-bubble">
+            <div class="msg-info">
+              <div class="msg-info-name">${name}</div>
+              <div class="msg-info-time">${formatDate(new Date())}</div>
+            </div>
+
+            <div class="msg-text">${content}</div>
+          </div>
+        </div>
+      
+      `;
+      chatContainer.insertAdjacentHTML("beforeend", loadingMsgHTML);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    msgerForm.addEventListener("submit", event => {
+      event.preventDefault();
+
+      const msgText = msgerInput.value;
+      const selectedLanguage = document.querySelector('input[name="language"]:checked');
+
+      if (!msgText || !selectedLanguage) {
+        alert("Please enter a message and select a language.");
+        return;
+      }
+ 
+
+      const textChat = get("#text-chat")
+      appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText, textChat);
+      msgerInput.value = "";
+      const language = selectedLanguage.value
+      botResponse(msgText,language);
+      selectedLanguage.checked = false;
+    });
+     
+    function appendMessage(name, img, side, content,chatContainer) {
+      let msgHTML;
+      
+      if (content instanceof Blob) {
+        // For audio messages
+        const audioUrl = URL.createObjectURL(content);
+        msgHTML = `
+        <div class="msg ${side}-msg">
+          <div class="msg-img" style="background-image: url(${img})"></div>
+
+          <div class="msg-bubble">
+            <div class="msg-info">
+              <div class="msg-info-name">${name}</div>
+              <div class="msg-info-time">${formatDate(new Date())}</div>
+            </div>
+
+            <div class="msg-audio">
+              <audio controls style="width: 50vw">
+                <source src="${audioUrl}" type="audio/wav">
+                Your browser does not support the audio element.
+              </audio>
+            </div>
+          </div>
+        </div>
+        `;
+      } else {
+        // For text messages
+        msgHTML = `
+        <div class="msg ${side}-msg">
+          <div class="msg-img" style="background-image: url(${img})"></div>
+
+          <div class="msg-bubble">
+            <div class="msg-info">
+              <div class="msg-info-name">${name}</div>
+              <div class="msg-info-time">${formatDate(new Date())}</div>
+            </div>
+
+            <div class="msg-text">${content}</div>
+          </div>
+        </div>
+        `;
+      }
+
+      chatContainer.insertAdjacentHTML("beforeend", msgHTML);
+      chatContainer.scrollTop = chatContainer.scrollHeight;;
+    }
+
+    function botResponse(rawText, language) {
+      const textChat = get("#text-chat");
+      appendMessageWithLoadingIndicator(BOT_NAME, BOT_IMG, "left", "Generating Text...", textChat);
+      // Bot Response
+      $.get("/text", { msg: rawText ,lang: language}).done(function (data) {
+        console.log(rawText);
+        console.log(data);
+        const msgText = data;
+        const textChat = get("#text-chat");
+        const tabName="text";
+        const loadingIndicatorMsg = textChat.querySelector(".bot-loading-msg");
+        if (loadingIndicatorMsg) {
+          loadingIndicatorMsg.remove();
+        }
+
+        appendMessage(BOT_NAME, BOT_IMG, "left", msgText,textChat);
+        displayFeedbackbot(textChat,rawText, msgText, language,tabName);
+        displayFeedbackuser(textChat,rawText, msgText, language,tabName);
+
+        
+      });
+    }
+
+    
+    function switchTab() {
+      if (textTab.style.display === "none") {
+        // Show Text Input Tab and hide Audio Input Tab
+        textTab.style.display = "block";
+        audioTab.style.display = "none";
+        switchTabButton.innerText = "Switch to Audio Input";
+        switchTabButton.innerHTML = '<i class="fas fa-microphone microphone-icon"></i><span id="switchTabText"><h6>Switch to Audio Input</h6></span>';
+      } else {
+        // Show Audio Input Tab and hide Text Input Tab
+        audioTab.style.display = "block";
+        textTab.style.display = "none";
+        switchTabButton.innerText = "Switch to Text Input";
+        switchTabButton.innerHTML = '<i class="fas fa-keyboard microphone-icon"></i><span id="switchTabText"><h6>Switch to Text Input</h6></span>';
+
+      }
+      const textChat = get("#text-chat");
+      const audioChat = get("#audio-chat");
+      if (textTab.style.display === "block") {
+        textChat.style.display = "block";
+        audioChat.style.display = "none";
+      } else {
+        textChat.style.display = "none";
+        audioChat.style.display = "block";
+      }
+    }
+    
+    const display = document.querySelector('.msger-audio-msg');
+    const controllerWrapper = document.querySelector('.msger-input-audio')
+
+
+    let mediaRecorder;
+    let audioChunks = [];    
+    let recordingInterval;
+    
+    function showLanguageSelectionAlert() {
+          alert("Please select a language.");
+    }
+
+    function startRecording() {
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(function (stream) {
+          mediaRecorder = new MediaRecorder(stream);
+          mediaRecorder.ondataavailable = function (e) {
+            audioChunks.push(e.data);
+          };
+          mediaRecorder.onstop = function () {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/wav; codecs=opus' });
+            const audioUrl = URL.createObjectURL(audioBlob); 
+            document.querySelector('#recordedAudio').src = audioUrl;
+            /*audioChunks = [];*/
+          };
+          mediaRecorder.start();
+          const startRecordingBtn = get("#startRecordingBtn");
+          const stopRecordingBtn = get("#stopRecordingBtn");
+          startRecordingBtn.disabled = true;
+          stopRecordingBtn.disabled = false;
+          startRecordingBtn.innerHTML = '<i class="fas fa-microphone-slash microphone-icon"></i> Recording...';
+        })
+        .catch(function (err) {
+          console.error("Error accessing the microphone:", err);
+        });
+      let recordingTime = 0;
+      const recordingTimeDiv = get("#recordingTime");
+      recordingTimeDiv.innerText = `Recording: ${recordingTime}s`;
+      recordingInterval = setInterval(() => {
+        recordingTime++;
+        recordingTimeDiv.innerText = `Recording: ${recordingTime}s`;
+        if (recordingTime >= 10) {
+          stopRecording(); // Automatically stop recording after 10 seconds
+        }
+      }, 1000);
+    }
+
+    // Stop Recording Function
+    function stopRecording() {
+      if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        mediaRecorder.stop();
+        clearInterval(recordingInterval);
+        const startRecordingBtn = get("#startRecordingBtn");
+        const stopRecordingBtn = get("#stopRecordingBtn");
+        const sendRecordingBtn = get("#sendRecordingBtn");
+        
+
+        startRecordingBtn.disabled = false;
+        stopRecordingBtn.disabled = true;
+        sendRecordingBtn.disabled = false;
+        startRecordingBtn.innerHTML = '<i class="fas fa-microphone microphone-icon"></i> Start Recording';
+
+
+        const languageSelection  = document.querySelector('input[name="language"]:checked');
+        
+        if (!languageSelection) {
+          showLanguageSelectionAlert();
+          return;
+        }
+      }
+    }
+
+    // Send Recording Function
+    function sendRecording() {
+      
+      const selectedLanguage  = document.querySelector('input[name="language"]:checked');
+      if (!selectedLanguage) {
+        alert("Please select a language.");
+        return;
+      }
+
+      const audioChat = get("#audio-chat");
+      
+
+     
+      
+      const formData = new FormData();
+      const audioBlob = new Blob(audioChunks, { type: 'audio/wav; codecs=opus'  }); // Set the type to 'audio/wav'
+      const audioFile = new File([audioBlob], "recorded_audio.wav");
+      formData.append("audio", audioFile);
+      formData.append("language", selectedLanguage.value);
+      const language = selectedLanguage.value
+      const tabName="audio";
+
+      selectedLanguage.checked = false
+      
+      appendMessage(PERSON_NAME, PERSON_IMG, "right", audioFile, audioChat);
+      appendMessageWithLoadingIndicator(BOT_NAME, BOT_IMG, "left", "Generating Text...", audioChat);
+   
+
+      // You can send the recorded audio data to the server using fetch or other methods here.
+      // Example: Use the fetch API to post the audio data to a server endpoint.
+      fetch("/audio", {
+        method: "POST",
+        body: formData
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Handle the response from the server if needed.
+          const userInput = decodeHTMLEntities(data.input);
+          const botOutput = decodeHTMLEntities(data.output);
+          // For example, you can append the server's response to the chat window.
+          console.log(data);
+          // Get the currently active chat container (text or audio)
+          const loadingIndicatorMsg = audioChat.querySelector(".bot-loading-msg");
+          if (loadingIndicatorMsg) {
+            loadingIndicatorMsg.remove();
+          }
+          const activeChat = document.querySelector('.msger-chat[style="display: block;"]');
+          
+      
+          // Append the bot's response to the active chat container
+          appendMessage(BOT_NAME, BOT_IMG, "left", botOutput, audioChat);
+          const tabName="audio"
+          displayFeedbackbot(audioChat,userInput,botOutput,language,tabName); 
+          displayFeedbackuser(audioChat,userInput,botOutput,language,tabName);
+
+          
+
+          
+          
+        })
+
+        .catch(error => {
+          console.error("Error sending audio data:", error);
+        });
+      
+      
+
+      // Reset the UI after sending audio
+      audioChunks = [];
+      recordedAudio.src = "";
+      const sendRecordingBtn = get("#sendRecordingBtn");
+      sendRecordingBtn.disabled = true;
+    }
+
+    
+    // Utils
+    function get(selector, root = document) {
+      return root.querySelector(selector);
+    }
+
+    function formatDate(date) {
+      const h = "0" + date.getHours();
+      const m = "0" + date.getMinutes();
+      return `${h.slice(-2)}:${m.slice(-2)}`;
+    }
+
+
+
+  </script>
+
+</body>
+
+</html>

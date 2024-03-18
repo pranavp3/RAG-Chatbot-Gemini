@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <form method="post">
+            <h2>Login</h2>
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+            <input type="number" name="Representativemobilenumber" placeholder="Representative mobile number" required>
+            <input type="text" name="username" placeholder="Farmer Name" required>
+            <input type="number" name="Farmermobilenumber" placeholder="Farmer mobile number" required>
+            <input type="text" name="Farmerlocation" placeholder="Farmer location" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <span id="passwordMessage" style="color: red;"></span>
+            <input type="submit" value="Login">
+        </form>
+        <p>Don't have an account? <a href="{{ url_for('signup') }}">Sign Up</a></p>
+    </div>
+    <script>
+        window.onload = function() {
+            var passwordInput = document.getElementById("password");
+            var passwordMessage = document.getElementById("passwordMessage");
+
+            passwordInput.addEventListener("input", function() {
+                if (passwordInput.value.length < 8) {
+                    passwordMessage.textContent = "Password must be at least 8 characters";
+                } else {
+                    passwordMessage.textContent = "";
+                }
+            });
+        };
+    </script>
+</body>
+</html>
